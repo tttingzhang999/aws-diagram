@@ -49,8 +49,8 @@ groups = [
 ]
 # id: (parent, absolute x, y, w, h, label)
 ghosts = [
-    ("ghost_client_b", "b_client", 520, 810, 180, 80, "No client task here<br>desired 1, AZ not pinned<br>(autoscaling 1–4)"),
-    ("ghost_server_b", "b_server", 790, 930, 180, 80, "No server task here<br>desired 1, AZ not pinned<br>(autoscaling 1–4)"),
+    ("ghost_client_b", "b_client", 520, 810, 180, 80, "No second client task<br>desired 1, AZ not pinned<br>(autoscaling 1–4)"),
+    ("ghost_server_b", "b_server", 790, 930, 180, 80, "No second server task<br>desired 1, AZ not pinned<br>(autoscaling 1–4)"),
     ("ghost_nat_b", "b_public", 260, 1060, 180, 70, "No NAT gateway<br>egress depends on AZ a"),
 ]
 # id: (parent, icon, x, y, label, label side)

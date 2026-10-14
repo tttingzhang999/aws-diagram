@@ -64,13 +64,13 @@
         <mxCell id="b_client" parent="az_b" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;verticalAlign=top;align=left;spacingLeft=30;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#00A4A6;fillColor=#E6F6F7;fontColor=#147EBA;dashed=0;" value="Private subnet (client)&lt;br&gt;10.120.8.0/23" vertex="1">
           <mxGeometry height="410" width="220" x="280" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="ghost_client_b" parent="b_client" style="rounded=0;dashed=1;fillColor=none;strokeColor=#7D8998;fontColor=#5A6B86;fontSize=11;html=1;whiteSpace=wrap;" value="No client task here&lt;br&gt;desired 1, AZ not pinned&lt;br&gt;(autoscaling 1–4)" vertex="1">
+        <mxCell id="ghost_client_b" parent="b_client" style="rounded=0;dashed=1;fillColor=none;strokeColor=#7D8998;fontColor=#5A6B86;fontSize=11;html=1;whiteSpace=wrap;" value="No second client task&lt;br&gt;desired 1, AZ not pinned&lt;br&gt;(autoscaling 1–4)" vertex="1">
           <mxGeometry height="80" width="180" x="20" y="60" as="geometry" />
         </mxCell>
         <mxCell id="b_server" parent="az_b" style="points=[[0,0],[0.25,0],[0.5,0],[0.75,0],[1,0],[1,0.25],[1,0.5],[1,0.75],[1,1],[0.75,1],[0.5,1],[0.25,1],[0,1],[0,0.75],[0,0.5],[0,0.25]];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=1;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;verticalAlign=top;align=left;spacingLeft=30;grIcon=mxgraph.aws4.group_security_group;grStroke=0;strokeColor=#00A4A6;fillColor=#E6F6F7;fontColor=#147EBA;dashed=0;" value="Private subnet (server)&lt;br&gt;10.120.12.0/23" vertex="1">
           <mxGeometry height="410" width="220" x="550" y="40" as="geometry" />
         </mxCell>
-        <mxCell id="ghost_server_b" parent="b_server" style="rounded=0;dashed=1;fillColor=none;strokeColor=#7D8998;fontColor=#5A6B86;fontSize=11;html=1;whiteSpace=wrap;" value="No server task here&lt;br&gt;desired 1, AZ not pinned&lt;br&gt;(autoscaling 1–4)" vertex="1">
+        <mxCell id="ghost_server_b" parent="b_server" style="rounded=0;dashed=1;fillColor=none;strokeColor=#7D8998;fontColor=#5A6B86;fontSize=11;html=1;whiteSpace=wrap;" value="No second server task&lt;br&gt;desired 1, AZ not pinned&lt;br&gt;(autoscaling 1–4)" vertex="1">
           <mxGeometry height="80" width="180" x="20" y="180" as="geometry" />
         </mxCell>
         <mxCell id="s3_assets" parent="cloud" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.s3;fillColor=#7AA116;strokeColor=#ffffff;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;whiteSpace=wrap;fontSize=12;fontColor=#232F3E;labelWidth=150;" value="Assets bucket&lt;br&gt;(regional)" vertex="1">
