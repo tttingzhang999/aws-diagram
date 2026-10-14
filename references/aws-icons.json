@@ -1,0 +1,147 @@
+{
+  "source": "https://github.com/jgraph/drawio/blob/dev/src/main/webapp/js/diagramly/sidebar/Sidebar-AWS4.js",
+  "verified": "2026-10-13",
+  "note": "Explicit draw.io AWS4 palette snapshot. API Gateway uses the Networking palette. Verify missing services instead of inheriting a default color. resource is a generic fallback, not a product logo. kind=standalone entries use shape=mxgraph.aws4.<shape> directly (no resourceIcon wrapper, strokeColor=none).",
+  "services": {
+    "lambda": {
+      "shape": "lambda",
+      "fill": "#ED7100"
+    },
+    "ec2": {
+      "shape": "ec2",
+      "fill": "#ED7100"
+    },
+    "ecr": {
+      "shape": "ecr",
+      "fill": "#ED7100"
+    },
+    "cognito": {
+      "shape": "cognito",
+      "fill": "#DD344C"
+    },
+    "identity_and_access_management": {
+      "shape": "identity_and_access_management",
+      "fill": "#DD344C"
+    },
+    "s3": {
+      "shape": "s3",
+      "fill": "#7AA116"
+    },
+    "dynamodb": {
+      "shape": "dynamodb",
+      "fill": "#C925D1"
+    },
+    "api_gateway": {
+      "shape": "api_gateway",
+      "fill": "#8C4FFF"
+    },
+    "eventbridge": {
+      "shape": "eventbridge",
+      "fill": "#E7157B"
+    },
+    "eventbridge_scheduler": {
+      "shape": "eventbridge_scheduler",
+      "fill": "#E7157B"
+    },
+    "sqs": {
+      "shape": "sqs",
+      "fill": "#E7157B"
+    },
+    "cloudwatch": {
+      "shape": "cloudwatch_2",
+      "fill": "#E7157B"
+    },
+    "systems_manager": {
+      "shape": "systems_manager",
+      "fill": "#E7157B"
+    },
+    "bedrock": {
+      "shape": "bedrock",
+      "fill": "#01A88D"
+    },
+    "resource": {
+      "shape": "resource",
+      "fill": "#67788C"
+    },
+    "bedrock_agentcore": {
+      "shape": "bedrock_agentcore",
+      "fill": "#01A88D"
+    },
+    "secrets_manager": {
+      "shape": "secrets_manager",
+      "fill": "#DD344C"
+    },
+    "users": {
+      "shape": "users",
+      "fill": "#232F3E",
+      "kind": "standalone"
+    },
+    "client": {
+      "shape": "client",
+      "fill": "#232F3E",
+      "kind": "standalone"
+    },
+    "internet": {
+      "shape": "internet_alt2",
+      "fill": "#232F3E",
+      "kind": "standalone"
+    },
+    "vpc_endpoint": {
+      "shape": "endpoints",
+      "fill": "#8C4FFF",
+      "kind": "standalone"
+    },
+    "alb": {
+      "shape": "application_load_balancer",
+      "fill": "#8C4FFF",
+      "kind": "standalone"
+    },
+    "ecs": {
+      "shape": "ecs",
+      "fill": "#ED7100"
+    },
+    "ecs_service": {
+      "shape": "ecs_service",
+      "fill": "#ED7100",
+      "kind": "standalone"
+    },
+    "aurora": {
+      "shape": "aurora",
+      "fill": "#C925D1"
+    },
+    "nat_gateway": {
+      "shape": "nat_gateway",
+      "fill": "#8C4FFF",
+      "kind": "standalone"
+    },
+    "transit_gateway": {
+      "shape": "transit_gateway",
+      "fill": "#8C4FFF"
+    },
+    "kms": {
+      "shape": "key_management_service",
+      "fill": "#DD344C"
+    },
+    "codepipeline": {
+      "shape": "codepipeline",
+      "fill": "#C925D1"
+    },
+    "codebuild": {
+      "shape": "codebuild",
+      "fill": "#C925D1"
+    },
+    "codedeploy": {
+      "shape": "codedeploy",
+      "fill": "#C925D1"
+    },
+    "sns": {
+      "shape": "sns",
+      "fill": "#E7157B"
+    },
+    "internet_gateway": {
+      "shape": "internet_gateway",
+      "fill": "#8C4FFF",
+      "kind": "standalone"
+    }
+  }
+}

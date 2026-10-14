@@ -1,0 +1,187 @@
+{
+  "name": "ecs-fullstack",
+  "preset": "network",
+  "source": {
+    "repository": "https://github.com/aws-samples/amazon-ecs-fullstack-app-terraform",
+    "revision": "98ee8e693a5ebc4b14f3dfe731bdc786637c1eb4",
+    "license": "MIT-0",
+    "method": "static reading of Infrastructure/**/*.tf, Infrastructure/Templates/buildspec.yml and Code/**; no terraform init/plan, no AWS calls"
+  },
+  "scope": {
+    "region": "unknown (var.aws_region has no default)",
+    "azs": "first two available AZs (data.aws_availability_zones), referred to as a and b"
+  },
+  "resources": [
+    {
+      "id": "vpc",
+      "type": "aws_vpc",
+      "cidr": "10.120.0.0/16",
+      "source": "Infrastructure/main.tf module.networking; Modules/Networking/main.tf"
+    },
+    {
+      "id": "sn_public",
+      "type": "aws_subnet",
+      "count": 2,
+      "cidrs": ["10.120.2.0/23", "10.120.4.0/23"],
+      "tier": "public",
+      "tier_basis": "default route table 0.0.0.0/0 -> internet gateway",
+      "source": "Modules/Networking/main.tf cidrsubnet(/16, 7, index+1)"
+    },
+    {
+      "id": "sn_client",
+      "type": "aws_subnet",
+      "count": 2,
+      "cidrs": ["10.120.6.0/23", "10.120.8.0/23"],
+      "tier": "private",
+      "tier_basis": "rt_private 0.0.0.0/0 -> NAT gateway",
+      "source": "Modules/Networking/main.tf cidrsubnet(/16, 7, index+3)"
+    },
+    {
+      "id": "sn_server",
+      "type": "aws_subnet",
+      "count": 2,
+      "cidrs": ["10.120.10.0/23", "10.120.12.0/23"],
+      "tier": "private",
+      "tier_basis": "rt_private 0.0.0.0/0 -> NAT gateway",
+      "source": "Modules/Networking/main.tf cidrsubnet(/16, 7, index+5)"
+    },
+    {
+      "id": "igw",
+      "type": "aws_internet_gateway",
+      "shown": false,
+      "note": "hidden to keep the demo light; it defines the public tier"
+    },
+    {
+      "id": "nat",
+      "type": "aws_nat_gateway",
+      "placement": "public subnet index 0 (AZ a)",
+      "source": "Modules/Networking/main.tf"
+    },
+    {
+      "id": "alb_client",
+      "type": "aws_lb",
+      "placement": ["sn_public[0]", "sn_public[1]"],
+      "listener": "HTTP 80",
+      "source": "main.tf module.alb_client"
+    },
+    {
+      "id": "alb_server",
+      "type": "aws_lb",
+      "placement": ["sn_public[0]", "sn_public[1]"],
+      "listener": "HTTP 80",
+      "source": "main.tf module.alb_server"
+    },
+    {
+      "id": "ecs_client",
+      "type": "aws_ecs_service",
+      "launch_type": "FARGATE",
+      "desired": 1,
+      "autoscaling": "1-4",
+      "placement": ["sn_client[0]", "sn_client[1]"],
+      "container_port": 80,
+      "source": "main.tf module.ecs_service_client"
+    },
+    {
+      "id": "ecs_server",
+      "type": "aws_ecs_service",
+      "launch_type": "FARGATE",
+      "desired": 1,
+      "autoscaling": "1-4",
+      "placement": ["sn_server[0]", "sn_server[1]"],
+      "container_port": 3001,
+      "source": "main.tf module.ecs_service_server"
+    },
+    {
+      "id": "dynamodb",
+      "type": "aws_dynamodb_table",
+      "name": "assets-table-<env>",
+      "source": "main.tf module.dynamodb_table"
+    },
+    {
+      "id": "s3_assets",
+      "type": "aws_s3_bucket",
+      "name": "assets-<region>-<random>",
+      "source": "main.tf module.s3_assets"
+    },
+    {
+      "id": "s3_artifacts",
+      "type": "aws_s3_bucket",
+      "role": "CodePipeline artifact store",
+      "source": "main.tf module.s3_codepipeline"
+    },
+    {
+      "id": "ecr",
+      "type": "aws_ecr_repository",
+      "count": 2,
+      "names": ["repo-server", "repo-client"]
+    },
+    {
+      "id": "pipeline",
+      "type": "aws_codepipeline",
+      "stages": ["Source (GitHub)", "Build (CodeBuild x2)", "Deploy (CodeDeployToECS x2)"],
+      "source": "Modules/CodePipeline/main.tf"
+    },
+    { "id": "codebuild", "type": "aws_codebuild_project", "count": 2 },
+    {
+      "id": "codedeploy",
+      "type": "aws_codedeploy_deployment_group",
+      "count": 2,
+      "strategy": "ECS blue/green with blue and green target groups"
+    },
+    { "id": "sns", "type": "aws_sns_topic", "role": "CodeDeploy trigger target" },
+    {
+      "id": "logs",
+      "type": "CloudWatch Logs",
+      "basis": "awslogs driver in Modules/ECS/TaskDefinition/main.tf",
+      "supporting": true
+    },
+    {
+      "id": "iam",
+      "type": "aws_iam_role",
+      "roles": ["ecs execution", "ecs task", "devops", "codedeploy"],
+      "supporting": true
+    }
+  ],
+  "relationships": [
+    {
+      "from": "users",
+      "to": "alb_client",
+      "kind": "HTTP",
+      "evidence": "client ALB security group allows 0.0.0.0/0:80; README"
+    },
+    { "from": "alb_client", "to": "ecs_client", "kind": "target group (ip)" },
+    {
+      "from": "users",
+      "to": "alb_server",
+      "kind": "HTTP API from the browser",
+      "evidence": "Code/client/src/services/RestServices.js axios GET serverUrl/api/getAllProducts; serverUrl = server ALB DNS (buildspec.yml)"
+    },
+    { "from": "alb_server", "to": "ecs_server", "kind": "target group (ip)" },
+    {
+      "from": "ecs_server",
+      "to": "dynamodb",
+      "kind": "Scan",
+      "evidence": "Code/server/src/app.js DynamoDB.DocumentClient().scan"
+    },
+    {
+      "from": "users",
+      "to": "s3_assets",
+      "kind": "image GET",
+      "evidence": "Main.vue <img :src=product.path>; README sample path is an S3 object URL"
+    },
+    { "from": "github", "to": "pipeline", "kind": "source" },
+    { "from": "pipeline", "to": "codebuild", "kind": "build action" },
+    { "from": "codebuild", "to": "ecr", "kind": "docker push" },
+    { "from": "pipeline", "to": "codedeploy", "kind": "deploy action" },
+    { "from": "codedeploy", "to": "ecs_client", "kind": "blue/green deployment" },
+    { "from": "codedeploy", "to": "ecs_server", "kind": "blue/green deployment" },
+    { "from": "codedeploy", "to": "sns", "kind": "deployment trigger" }
+  ],
+  "assumptions": [
+    "The browser fetches product images straight from the assets bucket; the bucket policy is not in the Terraform, so public read is a deployment-time step."
+  ],
+  "ha_limitations": [
+    "One NAT gateway in AZ a: AZ b private subnets lose egress if AZ a fails.",
+    "ECS services start at one task each; autoscaling allows up to four."
+  ]
+}
